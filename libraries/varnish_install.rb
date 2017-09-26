@@ -33,13 +33,15 @@ class Chef
       end
 
       def add_vendor_repo
+        # packagecloud repos omit dot from major version
+        major_version_no_dot = new_resource.vendor_version.to_s.tr('.', '')
         case node['platform_family']
         when 'debian'
           repo = apt_repository 'varnish-cache' do
-            uri "http://repo.varnish-cache.org/#{node['platform']}"
+            uri "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/#{node['platform']}"
             distribution node['lsb']['codename']
-            components ["varnish-#{new_resource.vendor_version}"]
-            key "http://repo.varnish-cache.org/#{node['platform']}/GPG-key.txt"
+            components ['main']
+            key "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/gpgkey"
             deb_src true
           end
           repo.run_action(:add)
@@ -47,9 +49,9 @@ class Chef
         when 'rhel', 'fedora'
           repo = yum_repository 'varnish' do
             description "Varnish #{new_resource.vendor_version} repo (#{node['platform_version']} - $basearch)"
-            url "http://repo.varnish-cache.org/redhat/varnish-#{new_resource.vendor_version}/el#{node['platform_version'].to_i}/"
+            url "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/el/#{node['platform_version'].to_i}/$basearch"
             gpgcheck false
-            gpgkey 'http://repo.varnish-cache.org/debian/GPG-key.txt'
+            gpgkey "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/gpgkey"
           end
           repo.run_action(:create)
           new_resource.updated_by_last_action(true) if repo.updated_by_last_action?
