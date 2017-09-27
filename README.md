@@ -95,6 +95,7 @@ from the varnish-cache repositories.
 | Name | Type | Default Value |
 -------|------|---------------|
 | `package_name` | string | `'varnish'` |
+| `package_version` | string | `nil` (latest minor release of `vendor_version`) |
 | `vendor_repo` | `true` or `false` | `false` |
 | `vendor_version` | string | `'4.0'` |
 
