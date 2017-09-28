@@ -95,6 +95,7 @@ from the varnish-cache repositories.
 | Name | Type | Default Value |
 -------|------|---------------|
 | `package_name` | string | `'varnish'` |
+| `package_version` | string | `nil` (latest minor release of `vendor_version`) |
 | `vendor_repo` | `true` or `false` | `false` |
 | `vendor_version` | string | `'4.0'` |
 
@@ -111,11 +112,12 @@ varnish_install 'default' do
 end
 ```
 
-Install version 4 from the vendor :
+Install version `4.0.3` (e.g. `4.0.3-5~trusty`) from the vendor :
 
 ```
 varnish_install 'default' do
   package_name 'varnish'
+  package_version '4.0.3-*'
   vendor_repo true
   vendor_version '4.0'
 end

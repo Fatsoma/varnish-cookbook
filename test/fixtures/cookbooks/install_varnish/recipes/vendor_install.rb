@@ -3,6 +3,7 @@ package 'curl'
 
 varnish_install 'default' do
   package_name 'varnish'
+  package_version '4.0.3-*'
   vendor_repo true
   vendor_version '4.0'
 end

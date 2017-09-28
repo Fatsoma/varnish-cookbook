@@ -17,23 +17,25 @@
 # limitations under the License.
 #
 
+# packagecloud repos omit dot from major version
+major_version_no_dot = node['varnish']['version'].to_s.tr('.', '')
 case node['platform_family']
 when 'debian'
   include_recipe 'apt'
   apt_repository 'varnish-cache' do
-    uri "http://repo.varnish-cache.org/#{node['platform']}"
+    uri "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/#{node['platform']}"
     distribution node['lsb']['codename']
-    components ["varnish-#{node['varnish']['version']}"]
-    key "http://repo.varnish-cache.org/#{node['platform']}/GPG-key.txt"
+    components ['main']
+    key "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/gpgkey"
     deb_src true
     notifies 'nothing', 'execute[apt-get update]', 'immediately'
   end
 when 'rhel', 'fedora'
   yum_repository 'varnish' do
     description "Varnish #{node['varnish']['version']} repo (#{node['platform_version']} - $basearch)"
-    url "http://repo.varnish-cache.org/redhat/varnish-#{node['varnish']['version']}/el#{node['platform_version'].to_i}/"
+    url "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/el/#{node['platform_version'].to_i}/$basearch"
     gpgcheck false
-    gpgkey 'http://repo.varnish-cache.org/debian/GPG-key.txt'
+    gpgkey "https://packagecloud.io/varnishcache/varnish#{major_version_no_dot}/gpgkey"
     action :create
   end
 end
