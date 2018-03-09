@@ -73,6 +73,7 @@ class Chef
           variables(
             config: new_resource,
             varnish_version: varnish_version.join('.').to_f,
+            idenity_name: varnish_idenity_name,
             exec_reload_command: varnish_exec_reload_command
           )
           action :nothing
