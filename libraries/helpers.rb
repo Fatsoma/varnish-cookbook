@@ -24,6 +24,10 @@ module VarnishCookbook
       end
     end
 
+    def varnish_idenity_name
+      node['hostname'].gsub(/^.+?\-/, '').tr('-', '')
+    end
+
     def varnish_exec_reload_command
       if platform_family?('debian')
         return '/usr/share/varnish/reload-vcl'

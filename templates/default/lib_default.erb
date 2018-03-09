@@ -27,6 +27,7 @@ STORAGE=<%= [@config.storage, (@config.file_storage_path % @config.name), @confi
 <%- else @config.storage %>
 STORAGE=<%= [@config.storage, @config.malloc_size].compact.join(",") %>
 <% end %>
+IDENITY_NAME=<%= @idenity_name %>
 
 # Pass the Daemon options
 
@@ -43,6 +44,7 @@ DAEMON_OPTS=" \
              <%- if node['platform_family'] == 'debian' %>
               -n $INSTANCE \
              <%- end %>
+              -i $IDENITY_NAME \
               -s $STORAGE \
               <%- unless (@config.parameters).nil? %>
                 <%- @config.parameters.sort.each do |param, value| %>
